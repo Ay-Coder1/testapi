@@ -1,38 +1,47 @@
-const express = require('express')
-const dotenv = require('dotenv').config()
-const PORT = process.env.PORT || 1000
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const morgan = require('morgan');
+const express = require("express");
+const dotenv = require("dotenv").config();
+const PORT = process.env.PORT || 1000;
+const mongoose = require("mongoose");
+const morgan = require("morgan");
+const bodyParser = require("body-parser");
 
-const productRouter = require('./routers/productRouter');
+const productRouter = require("./routers/ProductRouter");
+const categoryRouter = require("./routers/CategoryRouter");
+const orderRouter = require("./routers/OrderRouter");
+const userRouter = require("./routers/UserRouter");
+const { authJwt } = require("./helper/jwt");
+const { errorhandler } = require("./helper/error-handler");
 
-const categoryRouter = require('./routers/categoryRouter');
+const app = express();
 
-const app = express()
+//DB config
+const db = require("./config/db").MongoURI;
 
-// DB config
-const db = require('./config/db').MongoURI;
- 
-// Database connection
-mongoose.connect(db, {useNewUrlParser: true})
-.then(() => console.log('MongoDB Connected'))
-.catch(err => console.log(err));
+//DATABASE connection
+mongoose
+  .connect(db, { useNewUrlParser: true })
+  .then(() => console.log("MongoDB Connected"))
+  .catch((err) => console.log(err));
 
-const api = process.env.API_URL
+const api = process.env.API_URL;
 
 // MIDDLEWARE
 app.use(bodyParser.json());
-app.use(morgan('tiny'))
+app.use(morgan("tiny"));
 
+app.use(authJwt());
+app.use(errorhandler);
 
+// product route //
+app.use(`${api}/products`, productRouter);
 
-// product route
-app.use(`${api}/products`, productRouter)
+// category route //
+app.use(`${api}/category`, categoryRouter);
 
+// order route //
+app.use(`${api}/order`, orderRouter);
 
-// category route
-app.use(`${api}/category`, categoryRouter)
-
+// User route  //
+app.use(`${api}/user`, userRouter);
 
 app.listen(PORT, () => console.log(`Server start on port ${PORT}`));
