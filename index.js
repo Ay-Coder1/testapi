@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
-const productRouter = require("./routers/ProductRouter");
+const productRouter = require("./routers/productRouter");
 const categoryRouter = require("./routers/CategoryRouter");
 const orderRouter = require("./routers/OrderRouter");
 const userRouter = require("./routers/UserRouter");
