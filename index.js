@@ -6,7 +6,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 const productRouter = require("./routers/productRouter");
-const categoryRouter = require("./routers/CategoryRouter");
+const categoryRouter = require("./routers/categoryRouter");
 const orderRouter = require("./routers/OrderRouter");
 const userRouter = require("./routers/UserRouter");
 const { authJwt } = require("./helper/jwt");
