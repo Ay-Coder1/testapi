@@ -5,8 +5,8 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
-const productRouter = require("./routers/productRouter");
-const categoryRouter = require("./routers/categoryRouter");
+const productRouter = require("./routers/ProductRouter");
+const categoryRouter = require("./routers/CategoryRouter");
 const orderRouter = require("./routers/OrderRouter");
 const userRouter = require("./routers/UserRouter");
 const { authJwt } = require("./helper/jwt");
@@ -15,11 +15,15 @@ const { errorhandler } = require("./helper/error-handler");
 const app = express();
 
 //DB config
-const db = require("./config/db").MongoURI;
+// const db = require("./config/db").MongoURI;
 
 //DATABASE connection
 mongoose
-  .connect(db, { useNewUrlParser: true })
+  .connect(process.env.CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName: process.env.DB_NAME,
+  })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
 
